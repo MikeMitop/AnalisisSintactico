@@ -199,6 +199,62 @@ Al correr el programa, la consola indicará la generación de los gráficos. Inm
 cada una con un título descriptivo y un color distinto (rojo claro, verde claro, celeste y amarillo claro). Los nodos en los grafos tendrán 
 forma cuadrada y presentarán etiquetas semánticas claras (ej. OP. RESTA (-), DATO: 8) en lugar de tecnicismos como "expr". Las conexiones entre nodos mostrarán flechas
 
+**1. Asociatividad por Izquierda:**
+![Asociatividad Izquierda](punto3.1_salida.png)
+
+### Explicación de la gráfica:
+
+Esta gráfica demuestra visualmente cómo el compilador estructura la información cuando se aplica la **asociatividad por izquierda**. 
+
+Al procesar la cadena `8 - 4 - 2`, podemos notar que el Árbol de Sintaxis Abstracto (AST) crece  hacia el flanco izquierdo. Como los compiladores resuelven las operaciones de abajo hacia arriba (desde las hojas hasta la raíz), este diseño garantiza que la máquina agrupe y evalúe primero los términos `8 - 4`. 
+
+Matemáticamente, esta estructura obliga a resolver la ecuación como **`(8 - 4) - 2`**, lo cual es el comportamiento estándar y algebraicamente correcto para operadores como la resta o la división.
+
+**2. Asociatividad por Derecha:**
+![Asociatividad Derecha](punto3.2_salida.png)
+
+### Explicación de la Gráfica:
+
+Esta gráfica ilustra el comportamiento del compilador cuando se fuerza una **asociatividad por derecha**.
+
+A diferencia del caso anterior, al procesar la misma cadena `8 - 4 - 2`, el árbol crece hacia el flanco derecho. Siguiendo la regla de evaluación de abajo hacia arriba (desde las hojas hasta la raíz), el compilador primero toma los nodos más profundos, agrupando y resolviendo primero la operación `4 - 2`.
+
+Matemáticamente, esta estructura altera por completo el orden de la evaluación, resolviendo la ecuación como **`8 - (4 - 2)`**. Aunque este comportamiento no es el estándar ni el correcto para una resta, es exactamente el diseño arquitectónico que utilizan los lenguajes de programación para evaluar operadores como la **potenciación o los exponentes**, donde una expresión como $2^{3^2}$ siempre debe agruparse y resolverse como $2^{(3^2)}$.
+
+
+**3. Precedencia Alta (*):**
+![Precedencia Alta](punto3.3_salida.png)
+
+### Explicación de la Gráfica:
+
+Esta gráfica evidencia cómo la gramática maneja la **precedencia alta** del operador de multiplicación frente a la suma, respetando estrictamente la jerarquía matemática universal.
+
+Al analizar la expresión `2 + 3 * 4`, el árbol ubica el bloque de la `OP. MULTIPLICACIÓN (*)` en un nivel mucho más profundo que la `OP. SUMA (+)`. Dado que el compilador siempre resuelve el árbol desde las hojas inferiores hacia la raíz (de abajo hacia arriba), la máquina se ve obligada a procesar primero los términos `3 * 4`.
+
+Matemáticamente, el resultado de esa multiplicación se propaga hacia arriba en el árbol para, finalmente, sumarse con el `2`. Esta estructura representa fielmente la agrupación **`2 + (3 * 4)`**, demostrando cómo el diseño de la gramática garantiza que el compilador jamás confunda el orden de las operaciones.
+
+**4. Precedencia Baja (*):**
+![Precedencia Baja](punto3.4_salida.png)
+
+
+### Explicación del Algoritmo
+
+Esta gráfica ilustra un escenario modificado intencionalmente donde se le asigna **precedencia baja** a la multiplicación (forzando a que la suma tenga mayor prioridad).
+
+Usando la misma cadena `2 + 3 * 4`, observamos que la estructura del árbol se invierte por completo respecto al caso anterior. Ahora, el bloque de la `OP. SUMA (+)` es el que se encuentra hundido en la parte más profunda del árbol, dejando a la multiplicación en la raíz. 
+
+Al evaluar de abajo hacia arriba, el compilador ejecutará primero la suma de `2 + 3`. Matemáticamente, esto altera el significado de la expresión, resolviéndola como **`(2 + 3) * 4`**. Esto demuestra visualmente el grave impacto lógico que puede tener definir mal la jerarquía (precedencia) de los operadores durante la creación de un lenguaje de programación o un analizador sintáctico.
+
+### Conclusión de las Gráficas
+
+En conclusión, estas cuatro gráficas demuestran visualmente una regla de oro en el diseño de compiladores: **la geometría estructural del Árbol de Sintaxis Abstracto (AST) dicta exactamente el orden de ejecución de las operaciones.**
+
+Podemos resumir el comportamiento matemático de la máquina en dos principios fundamentales:
+
+1. **El Principio de Asociatividad (Dirección del árbol):** Cuando los operadores tienen el mismo nivel de importancia (como múltiples restas), la asociatividad define si el árbol "crece" hacia la izquierda o hacia la derecha, determinando el sentido de la lectura secuencial.
+2. **El Principio de Precedencia (Profundidad del árbol):** Cuando los operadores tienen distinta importancia (como una suma y una multiplicación), la precedencia define qué tan "profundo" se entierra un nodo. **La regla absoluta de un compilador es: lo que está más abajo en las hojas, se evalúa primero.**
+
+Como pudimos observar, cualquier error al definir la precedencia o la asociatividad en las reglas de la gramática resultará en un árbol invertido o mal estructurado, lo que inevitablemente llevará a la máquina a realizar cálculos matemáticamente incorrectos de manera silenciosa (como se evidenció en el Test 2 y el Test 4).
 
 ## Pasos de Ejecución
 
