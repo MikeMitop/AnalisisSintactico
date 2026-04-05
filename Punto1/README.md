@@ -291,6 +291,8 @@ estructurado correctamente con nodos celestes y conexiones grises. Si se ingresa
 (léxico o sintáctico) en la consola y detendrá el programa.
 
 
+![Salida del Punto 1](salida_punto1.png)
+
   ## Pasos de Ejecución
 
 Instalar las dependencias necesarias ejecutando en la terminal:
