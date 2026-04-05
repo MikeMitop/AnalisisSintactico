@@ -147,6 +147,8 @@ Iniciando Benchmark (CYK [Python] vs Flex/Bison [C Nativo])...
  N=190 | CYK (Python): 0.26403s | Bison (C): 0.000011s
 ```
 
+![Salida del Punto 2](salida_punto2.png)
+
 inalizado el ciclo de pruebas, se abrirá una ventana de Matplotlib mostrando un gráfico lineal donde:
 
 - La línea roja correspondiente a Bison se mantendrá estática en el eje X (prácticamente en 0 segundos) durante toda la ejecución.
